@@ -6,5 +6,7 @@ async def set_default_commands(dp):
         [
             types.BotCommand("start", "Нахуй иди, я не хочу работать."),
             types.BotCommand("help", "В другом месте ищи помощи."),
+            types.BotCommand("ph_add", "Добавление фразы."),
+
         ]
     )

@@ -2,15 +2,18 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from loader import dp
-from states.SomeState import meanless
+from states.SomeState import meanless # TODO Убрать это тестовое состояние
 import asyncio
 
 # Эхо хендлер, куда летят текстовые сообщения без указанного состояния
-@dp.message_handler(state=None)
-async def bot_echo(message: types.Message):
+"""@dp.message_handler(state=None) 
+async def bot_echo(message: types.Message): # TODO почистить и разбить этот хендлер
     user_id = message.from_user.id
-    await dp.bot.send_message(340981880, f'Тут чорт написал, его Айди : {user_id}')
-    await dp.bot.send_message(340981880, f'Тут чорт написал, его сообщение : \n {message.text}')
+    if user_id == 340981880:
+        pass
+    else:
+        await dp.bot.send_message(340981880, f'Тут чорт написал, его Айди : {user_id}')
+        await dp.bot.send_message(340981880, f'Тут чорт написал, его сообщение : \n {message.text}')
     if message.text == 'Я состоятельный' and meanless.statecounter == 0:
         await message.answer('Похуй, будешь состоятельным хуем.')
         await meanless.kekstate.set()
@@ -32,6 +35,6 @@ async def bot_echo_all(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     await dp.bot.send_message(340981880, f'Тут чорт написал, его Айди : {user_id}')
     await state.finish()
-    
+    """
     
 
