@@ -6,4 +6,3 @@ class addphrases(StatesGroup):
     Phrase = State()
     Answer = State()
     Rep_Influence = State()
-    Rep_Immunity = State()

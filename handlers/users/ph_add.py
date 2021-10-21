@@ -5,6 +5,8 @@ from loader import dp
 from states.PhraseState import addphrases
 import asyncio
 
+from utils.data_base import sql_add_command
+
 
 @dp.message_handler(commands="ph_add", state=None)
 async def pha_Start(message: types.Message):
@@ -40,17 +42,18 @@ async def ph_Answer(message: types.Message, state: FSMContext):
 async def ph_Influence(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['Rep_Influence'] = int(message.text)
-    await addphrases.next()
-    await message.reply('Иммуность ?')
+    
+    await sql_add_command(state)
+    await state.finish()
 
 
-@dp.message_handler(state=addphrases.Rep_Immunity)
+"""@dp.message_handler(state=addphrases.Rep_Immunity)
 async def ph_Immunity(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['Rep_Immunity'] = message.text
     async with state.proxy() as data:
         await message.reply(str(data))
-    await state.finish()
+    await state.finish()"""
 
 
 

@@ -2,16 +2,21 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from loader import dp
-from states.SomeState import meanless # TODO Убрать это тестовое состояние
+from states.SomeState import meanless  # TODO Убрать это тестовое состояние
 import asyncio
+from time import sleep
 
 # Эхо хендлер, куда летят текстовые сообщения без указанного состояния
-"""@dp.message_handler(state=None) 
-async def bot_echo(message: types.Message): # TODO почистить и разбить этот хендлер
+
+
+@dp.message_handler(state=None)
+async def bot_echo(message: types.Message):  # TODO почистить и разбить этот хендлер
     user_id = message.from_user.id
+
     if user_id == 340981880:
         pass
     else:
+        
         await dp.bot.send_message(340981880, f'Тут чорт написал, его Айди : {user_id}')
         await dp.bot.send_message(340981880, f'Тут чорт написал, его сообщение : \n {message.text}')
     if message.text == 'Я состоятельный' and meanless.statecounter == 0:
@@ -19,11 +24,12 @@ async def bot_echo(message: types.Message): # TODO почистить и раз�
         await meanless.kekstate.set()
         meanless.statecounter += 1
     elif message.text == 'Я состоятельный' and meanless.statecounter != 0:
-        await message.answer('Нахуй иди, не состоятельный ты')   
+        await message.answer('Нахуй иди, не состоятельный ты')
+    # TODO Убрал эту гуль функцию
     else:
         await message.answer(f"Ты не состоятельный Хуй."
-                         f"Твой сблев:\n"
-                         f"{message.text}")
+                             f"Твой сблев:\n"
+                             f"{message.text}")
 
 
 # Эхо хендлер, куда летят ВСЕ сообщения с указанным состоянием
@@ -35,6 +41,3 @@ async def bot_echo_all(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     await dp.bot.send_message(340981880, f'Тут чорт написал, его Айди : {user_id}')
     await state.finish()
-    """
-    
-
