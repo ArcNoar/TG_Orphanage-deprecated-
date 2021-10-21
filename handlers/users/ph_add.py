@@ -1,4 +1,4 @@
-from aiogram import types
+from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 
 from loader import dp
@@ -7,12 +7,28 @@ import asyncio
 
 from utils.data_base import sql_add_command
 
+from aiogram.dispatcher.filters import Text
 
+Noah = 340981880
+user_id = None
 @dp.message_handler(commands="ph_add", state=None)
 async def pha_Start(message: types.Message):
-    await addphrases.Category.set()
-    await message.reply('Категория ?')
+    global user_id
+    user_id = message.from_user.id
+    if user_id == Noah:
+        await addphrases.Category.set()
+        await message.reply('Категория ?')
+    else:
+        await message.reply('Ты самозванец йобанный')
 
+@dp.message_handler(state='*', commands = 'отмена')
+@dp.message_handler(Text(equals='отмена', ignore_case = True),state='*')
+async def cancel_handler(message: types.Message, state = FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await message.reply('Оки оки, еще нахуй пойти можешь.')
 
 @dp.message_handler(state=addphrases.Category)
 async def ph_Category(message: types.Message, state: FSMContext):
@@ -47,13 +63,7 @@ async def ph_Influence(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-"""@dp.message_handler(state=addphrases.Rep_Immunity)
-async def ph_Immunity(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['Rep_Immunity'] = message.text
-    async with state.proxy() as data:
-        await message.reply(str(data))
-    await state.finish()"""
+
 
 
 

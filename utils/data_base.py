@@ -1,5 +1,5 @@
 import sqlite3 as sq
-
+from loader import dp
 
 def sql_start():
     global base, cur
@@ -17,3 +17,12 @@ async def sql_add_command(state):
         cur.execute('INSERT INTO phMemory VALUES (?, ?, ?, ?)',
                     tuple(data.values()))
         base.commit()
+
+
+async def sql_responder(message):
+    for graph in cur.execute('SELECT * FROM phMemory').fetchall():
+        if message.text == graph[1]:
+            await message.answer(graph[2])
+
+        
+        #await dp.bot.send_message(message.from_user.id, f'{graph[0]}, {graph[1]} ,{graph[2]}, {graph[-1]}')
