@@ -1,16 +1,13 @@
 from aiogram import executor
 
 from loader import dp
-import middlewares, filters, handlers
+import middlewares, handlers #Убрал фильтры, нахуй они мне нужны
 from utils.notify_admins import on_startup_notify
-from utils.set_bot_commands import set_default_commands
 
-from utils.data_base import sql_start
+from Ai_package.Contextual_AI.Contextual_DB import sql_start
 
 
 async def on_startup(dispatcher):
-    # Устанавливаем дефолтные команды
-    await set_default_commands(dispatcher)
     
     # Уведомляет про запуск
     await on_startup_notify(dispatcher)

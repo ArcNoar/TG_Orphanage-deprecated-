@@ -5,7 +5,8 @@ from loader import dp
 from states.PhraseState import addphrases
 import asyncio
 
-from utils.data_base import sql_add_command
+from Ai_package.Contextual_AI.Contextual_DB import sql_add_command
+from Ai_package.Contextual_AI import ctw
 
 from aiogram.dispatcher.filters import Text
 
@@ -45,7 +46,9 @@ async def ph_Category(message: types.Message, state: FSMContext):
             list_of_triggers.append(new_trigger)
             
     await sql_add_command(list_of_triggers)
+    ctw.refresh()
     await state.finish()
+    
 
 
 

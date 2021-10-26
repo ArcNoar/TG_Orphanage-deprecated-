@@ -1,13 +1,10 @@
 import sqlite3 as sq
 from loader import dp
 
-
-# TODO ЩА ВСЕ БЛЯТЬ ЭТО ПЕРЕДЕЛЫВАТЬ БУДУ
+base = sq.connect('PhrasMemory.db')
+cur = base.cursor()
 
 def sql_start(): # Это все будет сменено и переделано.
-    global base, cur
-    base = sq.connect('PhrasMemory.db')
-    cur = base.cursor()
     if base:
         print('ДБ Подключена вроде как')
     base.execute(
@@ -16,6 +13,40 @@ def sql_start(): # Это все будет сменено и переделан
         'CREATE TABLE IF NOT EXISTS ph_respond(Категория TEXT, Ответ TEXT , репутация TEXT)') 
 
     base.commit()
+
+
+def get_words(category): # Достать все ответы из дб
+
+    r = None
+    if category == None:
+        r = cur.execute('SELECT Ответ FROM ph_respond').fetchall()
+    else:
+        r = cur.execute(
+            'SELECT Ответ FROM ph_respond WHERE Категория == ?', (category,)).fetchall()
+    return r
+
+
+def get_keys(category): # Достать все ключи из дб
+
+    r = None
+    if category == None:
+        r = cur.execute('SELECT Фраза FROM ph_keys').fetchall()
+    else:
+        r = cur.execute(
+            'SELECT Фраза FROM ph_keys WHERE Категория == ?', (category,)).fetchall()
+    return r
+
+
+def get_tags(): # Достать все категории из дб
+
+    r = cur.execute('SELECT Категория FROM ph_keys').fetchall()
+    return r
+
+def get_XY(): # Достать все КАТЕГОРИЯ - КЛЮЧ
+
+    r = cur.execute('SELECT Категория, Фраза FROM ph_keys').fetchall()
+    return r
+
 
 
 async def sql_add_command(batch_list):
@@ -43,6 +74,8 @@ async def sql_add_command(batch_list):
         print('Не удалось загрузить батч в ДБ. Предоставленный батч не является списком')
 
 
-async def sql_responder(message):
-    pass
+
+
+
+
 

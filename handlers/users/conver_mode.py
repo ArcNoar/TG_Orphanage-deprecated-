@@ -5,7 +5,7 @@ import asyncio
 
 from states.Conver_State import Regular_Conver
 
-from utils.data_base import sql_responder
+#from utils.data_base import sql_responder
 
 
 """ Это Хендлер для обычного беседного режима """
@@ -16,5 +16,6 @@ async def bot_echo(message: types.Message, state = FSMContext):
         await message.answer('Оки Доки')
         await state.finish()
     else:
-        await sql_responder(message)
+        #await sql_responder(message)
+        pass
     
