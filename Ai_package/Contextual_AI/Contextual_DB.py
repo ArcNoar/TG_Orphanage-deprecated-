@@ -48,6 +48,23 @@ def get_XY(): # Достать все КАТЕГОРИЯ - КЛЮЧ
     return r
 
 
+def sql_remember(some_list):
+    """
+    some_list = ['',user_message,'','']
+
+    """
+    category_value = some_list[0]
+    id_value = some_list[3]
+    #ph_keys table
+    key_value = some_list[1]
+    #ph_respond table
+    respond_value = some_list[2]
+    cur.execute('INSERT INTO ph_keys VALUES(?, ?, ?)', 
+                ('{}'.format(category_value),'{}'.format(key_value),'{}'.format(id_value))) # Добавление в PH_KEYS
+    base.commit()
+    cur.execute('INSERT INTO ph_respond VALUES(?, ?, ?)',
+                ('{}'.format(category_value),'{}'.format(respond_value),'{}'.format(id_value))) # Добавление в PH_RESPOND
+    base.commit()
 
 async def sql_add_command(batch_list):
     """

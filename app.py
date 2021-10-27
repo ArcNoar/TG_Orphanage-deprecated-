@@ -4,6 +4,7 @@ from loader import dp
 import middlewares, handlers #Убрал фильтры, нахуй они мне нужны
 from utils.notify_admins import on_startup_notify
 
+
 from Ai_package.Contextual_AI.Contextual_DB import sql_start
 
 

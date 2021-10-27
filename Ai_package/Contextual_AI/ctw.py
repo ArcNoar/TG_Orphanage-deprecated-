@@ -62,7 +62,7 @@ dt = Data_Preparation()
 all_words = dt.prepare_AW(unpacked_keys)
 tag_list = dt.prepare_TL(unpacked_tags)
 xy = dt.prepare_XY()
-print(tag_list)
+
 
 def refresh():
     global unpacked_bag, unpacked_keys, unpacked_tags
@@ -73,7 +73,6 @@ def refresh():
     global all_words, tag_list, xy
     all_words = dt.prepare_AW(unpacked_keys)
     tag_list = dt.prepare_TL(unpacked_tags)
-    print(tag_list)
     xy = dt.prepare_XY()
 
 

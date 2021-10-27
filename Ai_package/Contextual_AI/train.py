@@ -45,7 +45,7 @@ hidden_size = 8
 output_size = len(tag_list)
 input_size = len(X_train[0])  # Длина ALL_WORDS
 learning_rate = 0.001
-num_epoches = 1000
+num_epoches = 2000
 
 
 dataset = ChatDataset()
@@ -59,35 +59,39 @@ model = NeuralNet(input_size, hidden_size, output_size).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
+def training():
+    for epoche in range(num_epoches):
+        for (words, labels) in train_loader:
+            words = words.to(device)
+            labels = labels.to(dtype=torch.long).to(device)
+            # Forward
+            outputs = model(words)
+            loss = criterion(outputs, labels)
+    
+            #backward / optimiser
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+        if (epoche + 1) % 100 == 0:
+            print(f'epoch {epoche + 1}/{num_epoches}, loss = {loss.item():.4f}')
+    
+    print(f'Final Loss, loss = {loss.item():.4f}')
+    
+    
+    data = {
+        "model_state":model.state_dict(),
+        "input_size": input_size,
+        "output_size": output_size,
+        "hidden_size":hidden_size,
+        "all_words": all_words,
+        "tags": tag_list
+        }
+    
+    FILE = "data.pth"
+    torch.save(data,FILE)
+    
+    print(f'Тренировка усе, все сохранено в {FILE}')
 
-for epoche in range(num_epoches):
-    for (words, labels) in train_loader:
-        words = words.to(device)
-        labels = labels.to(dtype=torch.long).to(device)
-        # Forward
-        outputs = model(words)
-        loss = criterion(outputs, labels)
+if __name__ == 'main':
+    training()
 
-        #backward / optimiser
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-    if (epoche + 1) % 100 == 0:
-        print(f'epoch {epoche + 1}/{num_epoches}, loss = {loss.item():.4f}')
-
-print(f'Final Loss, loss = {loss.item():.4f}')
-
-
-data = {
-    "model_state":model.state_dict(),
-    "input_size": input_size,
-    "output_size": output_size,
-    "hidden_size":hidden_size,
-    "all_words": all_words,
-    "tags": tag_list
-    }
-
-FILE = "data.pth"
-torch.save(data,FILE)
-
-print(f'Тренировка усе, все сохранено в {FILE}')
