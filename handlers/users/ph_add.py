@@ -13,7 +13,7 @@ from aiogram.dispatcher.filters import Text
 Noah = 340981880
 user_id = None
 
-
+"""
 @dp.message_handler(commands="ph_add", state=None)
 async def pha_Start(message: types.Message):
     global user_id
@@ -23,6 +23,12 @@ async def pha_Start(message: types.Message):
         await message.reply('Ввод в формате КАТЕГОРИЯ | ФРАЗА | ОТВЕТ | РЕПУТАЦИЯ (Каждый ввод должен начинать с новой строки)')
     else:
         await message.reply('Ты самозванец йобанный')
+"""
+@dp.message_handler(commands="ph_add", state=None)
+async def pha_Start(message: types.Message):
+    await addphrases.Adding.set()
+    await message.reply('Ввод в формате КАТЕГОРИЯ | ФРАЗА | ОТВЕТ | РЕПУТАЦИЯ (Каждый ввод должен начинать с новой строки)')
+
 
 @dp.message_handler(state='*', commands = 'отмена')
 @dp.message_handler(Text(equals='отмена', ignore_case = True),state='*')

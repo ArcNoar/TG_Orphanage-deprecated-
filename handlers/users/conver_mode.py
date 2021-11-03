@@ -46,40 +46,79 @@ model.eval()
 
 @dp.message_handler(state=None)
 async def bot_conver(message: types.Message):
-    
-    sentence = message.text
+    if (message.text).startswith('Ной,'):
+        mesaga = message.text
+        sentence = mesaga[4:]
+        sentence = tokenize(sentence)
+        X = bag_of_words(sentence, all_words)
+        X = X.reshape(1, X.shape[0])
+        X = torch.from_numpy(X).to(device)
 
-    sentence = tokenize(sentence)
-    X = bag_of_words(sentence, all_words)
-    X = X.reshape(1, X.shape[0])
-    X = torch.from_numpy(X).to(device)
+        output = model(X)
+        _, predicted = torch.max(output, dim=1)
 
-    output = model(X)
-    _, predicted = torch.max(output, dim=1)
+        tag = tags[predicted.item()]
 
-    tag = tags[predicted.item()]
-
-    probs = torch.softmax(output, dim=1)
-    prob = probs[0][predicted.item()]
-    if prob.item() > 0.90:
-        for unit in tag_list:
-            if tag == unit:
-                collected_words = get_words('{}'.format(tag))
-                unpacked_words = []
-                for word in collected_words:
-                    unpacked_words.append(word[0])
-                await message.answer(f"{random.choice(unpacked_words)}")
-    else:
-        not_responded = ['Не_распознано',message.text,'ВПИШИ ОТВЕТ', message.from_user.id]
-        if (message.text).startswith('/'):
-            pass
+        probs = torch.softmax(output, dim=1)
+        prob = probs[0][predicted.item()]
+        if prob.item() > 0.75:
+            for unit in tag_list:
+                if tag == unit:
+                    collected_words = get_words('{}'.format(tag))
+                    unpacked_words = []
+                    for word in collected_words:
+                        unpacked_words.append(word[0])
+                    await message.answer(f"{random.choice(unpacked_words)}")
         else:
-            try:
-                sql_remember(not_responded)
-            except:
-                print('Возникла ошибка при запоминании.')
+            not_responded = ['Не_распознано',message.text,'ВПИШИ ОТВЕТ', message.from_user.id]
+            if (message.text).startswith('/'):
+                pass
+            else:
+                try:
+                    sql_remember(not_responded)
+                except:
+                    print('Возникла ошибка при запоминании.')
 
-        await message.answer("А? О чем ты?")
+            #await message.answer("А? О чем ты?")
+            print('Не понял че там написано')
+    else:
+
+        sentence = message.text 
+        sentence = tokenize(sentence)
+        X = bag_of_words(sentence, all_words)
+        X = X.reshape(1, X.shape[0])
+        X = torch.from_numpy(X).to(device)
+
+        output = model(X)
+        _, predicted = torch.max(output, dim=1)
+
+        tag = tags[predicted.item()]
+
+        probs = torch.softmax(output, dim=1)
+        prob = probs[0][predicted.item()]
+        if prob.item() > 0.75:
+            for unit in tag_list:
+                if tag == unit:
+                    collected_words = get_words('{}'.format(tag))
+                    unpacked_words = []
+                    for word in collected_words:
+                        unpacked_words.append(word[0])
+                    print(f'Ответ на {sentence} не требуется')
+                    #await message.answer(f"{random.choice(unpacked_words)}")
+        else:
+            not_responded = ['Не_распознано',message.text,'ВПИШИ ОТВЕТ', message.from_user.id]
+            if (message.text).startswith('/'):
+                pass
+            else:
+                try:
+                    sql_remember(not_responded)
+                except:
+                    print('Возникла ошибка при запоминании.')
+
+            #await message.answer("А? О чем ты?")
+            print('Не понял че там написано')
+
+
 
 
     

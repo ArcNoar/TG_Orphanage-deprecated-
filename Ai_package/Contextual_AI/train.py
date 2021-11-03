@@ -45,7 +45,7 @@ hidden_size = 8
 output_size = len(tag_list)
 input_size = len(X_train[0])  # Длина ALL_WORDS
 learning_rate = 0.001
-num_epoches = 2000
+num_epoches = 1500
 
 
 dataset = ChatDataset()
