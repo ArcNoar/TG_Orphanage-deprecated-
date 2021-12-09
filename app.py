@@ -5,7 +5,7 @@ import middlewares, filters, handlers
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
 
-from utils.data_base import sql_start
+
 
 
 async def on_startup(dispatcher):
@@ -16,7 +16,7 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
     # Дб по идее
-    sql_start()
+
 
 
 
